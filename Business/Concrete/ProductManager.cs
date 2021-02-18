@@ -1,13 +1,19 @@
 ﻿using Business.Abstarct;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstarct;
 using DataAccess.Concrete.InMemory;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
+using ValidationException = FluentValidation.ValidationException;
 
 namespace Business.Concrete
 {
@@ -20,15 +26,24 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-            if (product.ProductName.Length < 2)
-            {
-                ////magic string deniliyor her yerde ayrı ayrı yazmamız gerekiyor bu böyle yapılmaz.
-                //return new ErrorResult("ürün ismi en az 2 karakter olmalıdır.");
-                return new ErrorResult(Messages.ProductNameInvalid);
+            //business code ayrı validation code ayrı
 
-            }
+
+
+            //if (product.ProductName.Length < 2)
+            //{
+            //    ////magic string deniliyor her yerde ayrı ayrı yazmamız gerekiyor bu böyle yapılmaz.
+            //    //return new ErrorResult("ürün ismi en az 2 karakter olmalıdır.");
+            //    return new ErrorResult(Messages.ProductNameInvalid);
+
+            //}
+
+            //// bu kod öyle bir yerde olmalı ki busines kısımda yer kaplamasın
+            //ValidationTool.Validate(new ProductValidator(), product);
+
             _productDal.Add(product);
             return new SuccessResult(Messages.ProductAdded);
         }
