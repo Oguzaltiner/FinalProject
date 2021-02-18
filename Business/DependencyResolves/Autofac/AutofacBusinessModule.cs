@@ -1,0 +1,23 @@
+﻿using Autofac;
+using Business.Abstarct;
+using Business.Concrete;
+using DataAccess.Abstarct;
+using DataAccess.Concrete.EntityFramework;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Business.DependencyResolves.Autofac
+{
+    public class AutofacBusinessModule : Module
+    {
+        //uygulama ayağa kalktığında çalışır.
+        protected override void Load(ContainerBuilder builder)
+        {
+            //biri senden ıpro isterse promanager ver
+            //serives.addsingleton<IPro,ProManager>()
+            builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
+            builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
+        }
+    }
+}
