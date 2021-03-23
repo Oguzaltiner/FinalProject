@@ -4,8 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstarct;
 using Business.Concrete;
+using Core.Utilities.Security.Encyrption;
+using Core.Utilities.Security.JWT;
 using DataAccess.Abstarct;
 using DataAccess.Concrete.EntityFramework;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebAPI
 {
@@ -31,6 +35,22 @@ namespace WebAPI
         {
             //AutoFac, Ninject,CastleWindsor, StructureMap, lighInject,DryInject --> IoC Container
             services.AddControllers();
+            var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = tokenOptions.Issuer,
+                        ValidAudience = tokenOptions.Audience,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+                    };
+                });
 
             //services.AddSingleton<IProductService, ProductManager>();
             //services.AddSingleton<IProductDal, EfProductDal>();
@@ -50,6 +70,7 @@ namespace WebAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

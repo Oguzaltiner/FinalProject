@@ -5,8 +5,10 @@ using Business.CCS;
 using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.Utilities.Interceptors;
+using Core.Utilities.Security.JWT;
 using DataAccess.Abstarct;
 using DataAccess.Concrete.EntityFramework;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +28,13 @@ namespace Business.DependencyResolves.Autofac
             builder.RegisterType<EfCategoryDal>().As<ICategoryDal>().SingleInstance();
             builder.RegisterType<FileLogger>().As<ILogger>().SingleInstance();
 
+            builder.RegisterType<UserManager>().As<IUserService>();
+            builder.RegisterType<EfUserDal>().As<IUserDal>();
+
+            builder.RegisterType<AuthManager>().As<IAuthService>();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+
+            builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>();
 
             //tüm injectionlara gitmeden bu kodu çalıştır.
             // tümünün aspectlerine bak varsa çalıştır.
