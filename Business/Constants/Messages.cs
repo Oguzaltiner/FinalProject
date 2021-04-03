@@ -15,11 +15,11 @@ namespace Business.Constants
         internal static string MaintenanceTime = "sistem bakımda";
 
         public static string AuthorizationDenied = "Yetkin yok";
-        internal static User UserNotFound;
-        internal static User PasswordError;
-        internal static string SuccessfulLogin;
-        internal static string UserAlreadyExists;
-        internal static string AccessTokenCreated;
-        internal static string UserRegistered;
+        public static string UserNotFound = "Kullanıcı yok";
+        public static string PasswordError = "Şifre Hatalı";
+        public static string SuccessfulLogin = "Giriş Başarılı";
+        public static string UserAlreadyExists = "Kullanıcı zaten var";
+        public static string AccessTokenCreated ="Token oluşturuldu";
+        public static string UserRegistered ="Kullanıcı kayıtlı";
     }
 }

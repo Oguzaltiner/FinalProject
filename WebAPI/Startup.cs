@@ -57,6 +57,9 @@ namespace WebAPI
                         IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
                     };
                 });
+            //oluþturduðumuz coremodule baðýmlýlýðýný ekle
+            //dependencyresolves adýnda extensions oluþturduk
+            //servicecollectionextensions altýnda oluþturduk
             services.AddDependencyResolves(new ICoreModule[] { new CoreModule() });
             //services.AddSingleton<IProductService, ProductManager>();
             //services.AddSingleton<IProductDal, EfProductDal>();
