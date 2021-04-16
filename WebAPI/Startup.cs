@@ -41,6 +41,9 @@ namespace WebAPI
             services.AddControllers();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddCors();
+
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -74,7 +77,8 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            //burdan istek gelirse get post put ne gelirse gelsin izin ver
+            app.UseCors(builder=>builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
             app.UseHttpsRedirection();
 
             app.UseRouting();
