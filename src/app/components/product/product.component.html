@@ -1,30 +1,42 @@
 <div *ngIf="dataLoaded == false" class="spinner-border text-dark" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <div class="mb-3">
-    <label for="filtertext" class="form-label">Ürün Ara</label>
-    <input type="text" [(ngModel)]="filterText" class="form-control" id="filterText" placeholder="Ara">
-  </div>
-  <div *ngIf="filterText"  class="alert alert-primary">
-    {{filterText}}  aradınız
- </div>
+  <span class="visually-hidden">Loading...</span>
+</div>
+<div class="mb-3">
+  <label for="filtertext" class="form-label">Ürün Ara</label>
+  <input
+    type="text"
+    [(ngModel)]="filterText"
+    class="form-control"
+    id="filterText"
+    placeholder="Ara"
+  />
+</div>
+<div *ngIf="filterText" class="alert alert-primary">
+  {{ filterText }} aradınız
+</div>
 <table *ngIf="dataLoaded == true" class="table">
-    <thead> 
-        <tr>
-            <th>ID</th>
-            <th>ÜRÜN ADI</th>
-            <th>ÜRÜN FİYATI</th>
-            <th>Kdv'li Fiyat</th>
-            <th>STOK ADETİ</th>
-            <th>KATEGORİ</th>
-        </tr>
-    </thead>
-<tr *ngFor="let product of products | filterPipe:filterText">
-    <td>{{product.productId}}</td>
-    <td>{{product.productName | uppercase}}</td>
-    <td>{{product.unitPrice |currency}}</td>
-    <td>{{product.unitPrice | vatAdded:10 |currency}}</td>
-    <td>{{product.unitInStock}}</td>
-    <td>{{product.categoryId}}</td>
-</tr>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>ÜRÜN ADI</th>
+      <th>ÜRÜN FİYATI</th>
+      <th>Kdv'li Fiyat</th>
+      <th>STOK ADETİ</th>
+      <th>KATEGORİ</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products | filterPipe: filterText">
+      <td>{{ product.productId }}</td>
+      <td>{{ product.productName | uppercase }}</td>
+      <td>{{ product.unitPrice | currency }}</td>
+      <td>{{ product.unitPrice | vatAdded: 10 | currency }}</td>
+      <td>{{ product.unitInStock }}</td>
+      <td>{{ product.categoryId }}</td>
+      <td>
+        <button (click)="addToCart(product)" type="button" class="btn btn-success">Sepete Ekle</button>
+      </td>
+    </tr>
+  </tbody>
 </table>
